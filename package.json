@@ -1,6 +1,8 @@
 {
   "name": "tool",
+  "description": "tool",
   "version": "2.0.0",
+  "author": "Theeradech Dechasit",
   "main": "main.js",
   "bin": "main.js",
   "license": "MIT",
@@ -8,7 +10,9 @@
     "start": "node main.js",
     "build": "pkg --compress GZip .",
     "electron": "electron .",
-    "packager": "npx electron-packager ."
+    "packager": "npx electron-packager . --out=bin",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --win"
   },
   "dependencies": {
     "chrome-launcher": "^0.14.1",
@@ -23,9 +27,25 @@
       "node14"
     ]
   },
+  "win": {
+    "publisherName": "Theeradech Dechasit",
+    "target": [
+      "portable "
+    ]
+  },
+  "build": {
+      "productName": "Tool",
+      "win": {
+          "target": ["portable"]
+      },
+      "portable": {
+          "artifactName": "tool.exe"
+      }
+  },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.61",
     "electron": "^15.1.1",
+    "electron-builder": "^22.11.7",
     "electron-packager": "^15.4.0"
   }
 }

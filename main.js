@@ -1,6 +1,8 @@
 const { app, BrowserWindow, Menu, globalShortcut } = require("electron");
 const path = require("path");
 const packageJson = require("./package.json");
+const chromeLauncher = require("chrome-launcher");
+
 let win
 
 function createWindow() {
@@ -24,6 +26,17 @@ function setMainMenu() {
       accelerator: "CmdOrCtrl+R",
       click() {
         reload()
+      },
+    },
+    {
+      label: "Open Web",
+      click() {
+        
+        chromeLauncher
+        .launch({
+          startingUrl: `https://vsreg.rd.go.th/VATINFOWSWeb/jsp/V001.jsp`,
+        })
+  
       },
     },
     {
