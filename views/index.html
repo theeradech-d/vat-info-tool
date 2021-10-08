@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tool V1.0.1</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea
+      id="html"
+      class="w-100 h-100"
+      placeholder="Copy ข้อมูลทั้งหน้าเว็บแล้วนำมาวางตรงนี้"
+    ></textarea>
+
+    <div class="mt-4 p-4 w-100" id="tableRender" style="display: none">
+      <table class="table table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+            <th>7</th>
+            <th>8</th>
+            <th>9</th>
+            <th>10</th>
+            <th>11</th>
+            <th>12</th>
+            <th>13</th>
+            <th>14</th>
+            <th>15</th>
+            <th>16</th>
+            <th>17</th>
+            <th>18</th>
+          </tr>
+          <tr>
+            <th>เลข ID</th>
+            <th>สาขา</th>
+            <th>คำนำหน้าชื่อ</th>
+            <th>ชื่อบริษัท</th>
+            <th>อาคาร</th>
+            <th>ห้องเลขที่</th>
+            <th>ชั้นที่</th>
+            <th>หมู่บ้าน</th>
+            <th>เลขที่</th>
+            <th>หมู่ที่</th>
+            <th>ตรอก/ซอย</th>
+            <th>แยก</th>
+            <th>ถนน</th>
+            <th>ตำบล/แขวง</th>
+            <th>อำเภอ/เขต</th>
+            <th>จังหวัด</th>
+            <th>รหัสไปรษณีย</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+      integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.min.js"
+      integrity="sha384-PsUw7Xwds7x08Ew3exXhqzbhuEYmA2xnwc8BuD6SEr+UmEHlX8/MCltYEodzWA4u"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+
+    <script>
+      var addressTitles = [
+        "อาคาร",
+        "ห้องเลขที่",
+        "ชั้นที่",
+        "หมู่บ้าน",
+        "เลขที่",
+        "หมู่ที่",
+        "ตรอก/ซอย",
+        "แยก",
+        "ถนน",
+        "ตำบล/แขวง",
+        "อำเภอ/เขต",
+        "จังหวัด",
+      ];
+
+      function getAddress(name, address) {
+        var nameIndex = address.indexOf(name);
+
+        if (nameIndex == -1) return "";
+
+        console.log("-------------------------------------");
+        console.log("FIND::", name);
+
+        var text = "";
+        var foundStop = false;
+        for (let index = nameIndex + 1; index < nameIndex + 10; index++) {
+          if (
+            addressTitles.indexOf(address[index]) == -1 &&
+            !foundStop &&
+            address[index] != undefined
+          ) {
+            text += address[index] + " ";
+            console.log("TEXT::", address[index]);
+          } else {
+            foundStop = true;
+          }
+        }
+
+        return text;
+      }
+
+      function splitHtml(text) {
+        var lines = text.split("\n");
+        var start = 0;
+        var heads = [];
+        var rows = [];
+
+        var _rowDataCount = 0;
+        var _rowData = "";
+        lines.forEach((line, index) => {
+          line = _.trim(_.trim(line, '"'));
+          if (line == "ลำดับ" && start == 0) {
+            start = 1;
+          }
+
+          if (start == 1) {
+            heads.push(line);
+          }
+
+          if (start == 2) {
+            if (line.substr(0, 18) == "จำนวนรายการทั้งหมด") {
+              start = 3;
+            }
+          }
+
+          if (start == 2) {
+            console.log(line);
+
+            _rowData += "\t" + line;
+
+            _rowDataCount++;
+
+            if (_rowDataCount == 2) {
+              _rowDataCount = 0;
+              rows.push(_rowData);
+              _rowData = "";
+            }
+          }
+
+          if (
+            line == "จดทะเบียน" &&
+            _.trim(_.trim(lines[index - 1], '"')) == "ประวัติการ" &&
+            start == 1
+          ) {
+            start = 2;
+            console.log("00000");
+          }
+        });
+
+        console.log(heads);
+        console.log(rows);
+
+        rows.forEach((row) => {
+          var cols = row.split("\t").map((o) => _.trim(o));
+
+          var address = cols[6].split(" ");
+
+          console.log(cols, address);
+          console.log("---------------------------");
+          //cols[]
+
+          //tableRender
+
+          var rowText = "<tr>";
+          rowText += "<td>" + cols[3] + "</td>";
+          rowText += "<td>" + cols[4] + "</td>";
+
+          if (cols[5].substr(0, 6) == "บริษัท") {
+            rowText += "<td>บริษัท</td>";
+            rowText += "<td>" + cols[5].substr(6) + "</td>";
+          } else {
+            rowText += "<td></td>";
+            rowText += "<td>" + cols[5] + "</td>";
+          }
+
+          rowText += "<td>" + getAddress("อาคาร", address) + "</td>";
+          rowText += "<td>" + getAddress("ห้องเลขที่", address) + "</td>";
+          rowText += "<td>" + getAddress("ชั้นที่", address) + "</td>";
+          rowText += "<td>" + getAddress("หมู่บ้าน", address) + "</td>";
+          rowText += "<td>" + getAddress("เลขที่", address) + "</td>";
+          rowText += "<td>" + getAddress("หมู่ที่", address) + "</td>";
+          rowText += "<td>" + getAddress("ตรอก/ซอย", address) + "</td>";
+          rowText += "<td>" + getAddress("แยก", address) + "</td>";
+          rowText += "<td>" + getAddress("ถนน", address) + "</td>";
+          rowText += "<td>" + getAddress("ตำบล/แขวง", address) + "</td>";
+          rowText += "<td>" + getAddress("อำเภอ/เขต", address) + "</td>";
+          rowText += "<td>" + getAddress("จังหวัด", address) + "</td>";
+          rowText += "<td>" + cols[7] + "</td>";
+
+          rowText += "</tr>";
+
+          $("#tableRender table tbody").append(rowText);
+        });
+
+        $("#tableRender").show();
+      }
+      $("#html").bind("paste", function (e) {
+        // access the clipboard using the api
+        var pastedData = e.originalEvent.clipboardData.getData("text");
+        splitHtml(pastedData);
+        setTimeout(() => {
+          $("#html").hide();
+        }, 100);
+      });
+    </script>
+  </body>
+</html>
