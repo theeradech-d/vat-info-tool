@@ -20,38 +20,38 @@ function createWindow() {
 }
 
 function setMainMenu() {
-  const template = [
-    {
-      label: "Reload",
-      accelerator: "CmdOrCtrl+R",
-      click() {
-        reload()
-      },
-    },
-    {
-      label: "Open Web",
-      click() {
+  // const template = [
+  //   {
+  //     label: "Reload",
+  //     accelerator: "CmdOrCtrl+R",
+  //     click() {
+  //       reload()
+  //     },
+  //   },
+  //   {
+  //     label: "Open Web",
+  //     click() {
         
-        chromeLauncher
-        .launch({
-          startingUrl: `https://vsreg.rd.go.th/VATINFOWSWeb/jsp/V001.jsp`,
-        })
+  //       chromeLauncher
+  //       .launch({
+  //         startingUrl: `https://vsreg.rd.go.th/VATINFOWSWeb/jsp/V001.jsp`,
+  //       })
   
-      },
-    },
-    {
-      label: "V"+packageJson.version,
-    },
-  ];
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+  //     },
+  //   },
+  //   {
+  //     label: "V"+packageJson.version,
+  //   },
+  // ];
+  // Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 
-  globalShortcut.register('F5', reload);
-  globalShortcut.register('CommandOrControl+R', reload);
+  globalShortcut.register('F5', ()=>reload());
+  globalShortcut.register('CommandOrControl+R', ()=>reload());
 
 }
 
 function reload(){
-  win.reload();
+  win.webContents.reloadIgnoringCache()
 } 
 
 app.whenReady().then(() => {

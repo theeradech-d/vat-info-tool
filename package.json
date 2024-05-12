@@ -1,7 +1,7 @@
 {
   "name": "tool",
   "description": "tool",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": "Theeradech Dechasit",
   "main": "main.js",
   "bin": "main.js",
@@ -34,18 +34,20 @@
     ]
   },
   "build": {
-      "productName": "Tool",
-      "win": {
-          "target": ["portable"]
-      },
-      "portable": {
-          "artifactName": "tool.exe"
-      }
+    "productName": "Tool",
+    "win": {
+      "target": [
+        "portable"
+      ]
+    },
+    "portable": {
+      "artifactName": "tool.exe"
+    }
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.61",
-    "electron": "^15.1.1",
-    "electron-builder": "^22.11.7",
-    "electron-packager": "^15.4.0"
+    "@electron-forge/cli": "^7.4.0",
+    "electron": "^30.0.3",
+    "electron-builder": "^24.13.3",
+    "electron-packager": "^17.1.2"
   }
 }
