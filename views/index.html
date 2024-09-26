@@ -235,7 +235,12 @@
       myHtml.find(".table.table-scroll tbody tr.text-center").each(function (index, value) {
         let _row = []
         $(value).find("td").each(function (index, value) {
-          _row.push(value.innerText)
+          if (index == 1) {
+            let _html =  $('<div>'+value.innerHTML+'</div>').html().split("<br style=\"box-sizing: border-box;\">")
+            _row.push(_html)
+          } else {
+            _row.push(value.innerText)
+          }
         })
         rows.push(_row)
       })
@@ -248,9 +253,10 @@
       rows.forEach((row) => {
         var cols = row
 
-        
+
 
         var address = cols[4].split(" ");
+        var taxIds = cols[1]
         var companyNames = cols[3].split("/")[0].trim()
 
         // console.log(cols, address);
@@ -260,7 +266,7 @@
         //tableRender
 
         var rowText = "<tr>";
-        rowText += "<td>" + cols[0] + "</td>";
+        rowText += "<td>" + taxIds[1] + "</td>";
         rowText += "<td>" + cols[2] + "</td>";
 
         if (companyNames.substr(0, 6) == "บริษัท") {
