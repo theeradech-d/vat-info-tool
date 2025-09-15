@@ -119,7 +119,7 @@
         }
       }
 
-      return text;
+      return text.replace("-", "").trim();
     }
 
     function splitHtml(text) {
@@ -177,7 +177,7 @@
       rows.forEach((row) => {
         var cols = row.split("\t").map((o) => _.trim(o));
 
-        var address = cols[6].split(" ");
+        var address = cols[6].replace("หมู่บ้าน", "หมู่บ้าน ").split(" ");
 
         console.log(cols, address);
         console.log("---------------------------");
@@ -228,15 +228,15 @@
       var rows = [];
 
 
-      myHtml.find(".table.table-scroll thead th").each(function (index, value) {
+      myHtml.find(".ant-table-content table thead th").each(function (index, value) {
         heads.push(value.innerText)
       })
 
-      myHtml.find(".table.table-scroll tbody tr.text-center").each(function (index, value) {
+      myHtml.find(".ant-table-content table tbody tr").each(function (index, value) {
         let _row = []
         $(value).find("td").each(function (index, value) {
           if (index == 1) {
-            let _html =  $('<div>'+value.innerHTML+'</div>').html().split("<br style=\"box-sizing: border-box;\">")
+            let _html = $('<div>' + value.innerHTML + '</div>').html().split("<br style=\"box-sizing: border-box;\">")
             _row.push(_html)
           } else {
             _row.push(value.innerText)
@@ -253,11 +253,24 @@
       rows.forEach((row) => {
         var cols = row
 
+        var address = _.trim(cols[4])
+        .replace("หมู่บ้าน", " หมู่บ้าน ")
+        .replace("ถนน", " ถนน ")
+        .replace(/ตำบล|แขวง/g, " ตำบล/แขวง ")
+        .replace(/อำเภอ|เขต/g, " อำเภอ/เขต ")
+        .replace("จังหวัด", " จังหวัด ")
+        .split(" ");
 
+        let province = address[address.length - 2]
+        let postCode = address[address.length - 1]
 
-        var address = cols[4].split(" ");
+        address.pop()
+        address.pop()
+
         var taxIds = cols[1]
         var companyNames = cols[3].split("/")[0].trim()
+
+        console.log("address", address)
 
         // console.log(cols, address);
         // console.log("---------------------------");
@@ -266,7 +279,7 @@
         //tableRender
 
         var rowText = "<tr>";
-        rowText += "<td>" + taxIds[1] + "</td>";
+        rowText += "<td>" + taxIds + "</td>";
         rowText += "<td>" + cols[2] + "</td>";
 
         if (companyNames.substr(0, 6) == "บริษัท") {
@@ -288,8 +301,10 @@
         rowText += "<td>" + getAddress("ถนน", address) + "</td>";
         rowText += "<td>" + getAddress("ตำบล/แขวง", address) + "</td>";
         rowText += "<td>" + getAddress("อำเภอ/เขต", address) + "</td>";
-        rowText += "<td>" + getAddress("จังหวัด", address) + "</td>";
-        rowText += "<td>" + cols[5] + "</td>";
+        rowText += "<td>" + province + "</td>";
+        // rowText += "<td>" + getAddress("จังหวัด", address) + "</td>";
+        // rowText += "<td>" + cols[5] + "</td>";
+        rowText += "<td>" + postCode + "</td>";
 
         rowText += "</tr>";
 

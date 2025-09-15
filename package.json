@@ -1,7 +1,7 @@
 {
   "name": "tool",
   "description": "tool",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "author": "Theeradech Dechasit",
   "main": "main.js",
   "bin": "main.js",

@@ -1,4 +1,4 @@
-1. Copy content from https://vsreg.rd.go.th/VATINFOWSWeb/jsp/V001.jsp **(CTRL+A and CTRL+C)**
+1. Copy content from https://vsinter.rd.go.th/rd-webcontent-web/#/vatsearch **(CTRL+A and CTRL+C)**
 
 2. Paste on App **(CTRL+V)**
 
