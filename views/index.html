@@ -119,7 +119,11 @@
         }
       }
 
-      return text.replace("-", "").trim();
+      if(_.trim(text) == "-") {
+        return ""
+      }
+
+      return text.trim();
     }
 
     function splitHtml(text) {
@@ -253,13 +257,29 @@
       rows.forEach((row) => {
         var cols = row
 
-        var address = _.trim(cols[4])
+        console.log("address.before", _.trim(cols[4]))
+
+        var addressText = _.trim(cols[4])
         .replace("หมู่บ้าน", " หมู่บ้าน ")
         .replace("ถนน", " ถนน ")
-        .replace(/ตำบล|แขวง/g, " ตำบล/แขวง ")
-        .replace(/อำเภอ|เขต/g, " อำเภอ/เขต ")
         .replace("จังหวัด", " จังหวัด ")
+
+        if(addressText.search("ตำบล") != -1) {
+          addressText = addressText.replace(/ตำบล/g, " ตำบล/แขวง ")
+        }else if(addressText.search("แขวง") != -1) {
+          addressText = addressText.replace(/แขวง/g, " ตำบล/แขวง ")
+        } 
+        
+        if(addressText.search("อำเภอ") != -1) {
+          addressText = addressText.replace(/อำเภอ/g, " อำเภอ/เขต ")
+        } else if(addressText.search("เขต") != -1) {
+          addressText = addressText.replace(/เขต/g, " อำเภอ/เขต ")
+        }
+
+        var address = addressText
         .split(" ");
+
+        console.log("address.after", addressText)
 
         let province = address[address.length - 2]
         let postCode = address[address.length - 1]
