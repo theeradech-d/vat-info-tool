@@ -19,6 +19,9 @@
       height: 100%;
     }
   </style>
+  <script>
+    var version = "20251002";
+  </script>
 </head>
 
 <body>
@@ -70,7 +73,9 @@
     </table>
   </div>
   <div style="position: fixed; bottom: 0; right: 0; color: rgba(0, 0, 0, 0.5); padding: 10px; z-index: 9999;">
-    v20251002</div>
+    <button type="button" class="btn btn-sm btn-outline-primary" onclick="downloadTable()">ดาวน์โหลดไฟล์นี้</button>
+    เวอร์ชั่น <span id="version"></span>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
     integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
@@ -364,6 +369,17 @@
         $("#html").hide();
       }, 100);
     });
+
+    document.getElementById("version").innerText = version;
+
+    function downloadTable() {
+      var a = document.createElement('a');
+      a.href = './index.html';
+      a.download = 'Vat-Tool-v' + version + '.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
   </script>
 </body>
 
