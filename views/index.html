@@ -69,6 +69,8 @@
       <tbody></tbody>
     </table>
   </div>
+  <div style="position: fixed; bottom: 0; right: 0; color: rgba(0, 0, 0, 0.5); padding: 10px; z-index: 9999;">
+    v20251002</div>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
     integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
@@ -119,7 +121,7 @@
         }
       }
 
-      if(_.trim(text) == "-") {
+      if (_.trim(text) == "-") {
         return ""
       }
 
@@ -260,24 +262,28 @@
         console.log("address.before", _.trim(cols[4]))
 
         var addressText = _.trim(cols[4])
-        .replace("หมู่บ้าน", " หมู่บ้าน ")
-        .replace("ถนน", " ถนน ")
-        .replace("จังหวัด", " จังหวัด ")
+          .replace("หมู่บ้าน", " หมู่บ้าน ")
+          .replace("ถนน", " ถนน ")
+          .replace("จังหวัด", " จังหวัด ")
 
-        if(addressText.search("ตำบล") != -1) {
+        if (addressText.search("อาคาร") != -1) {
+          addressText = addressText.replace(/อาคาร/g, " อาคาร ")
+        }
+
+        if (addressText.search("ตำบล") != -1) {
           addressText = addressText.replace(/ตำบล/g, " ตำบล/แขวง ")
-        }else if(addressText.search("แขวง") != -1) {
+        } else if (addressText.search("แขวง") != -1) {
           addressText = addressText.replace(/แขวง/g, " ตำบล/แขวง ")
-        } 
-        
-        if(addressText.search("อำเภอ") != -1) {
+        }
+
+        if (addressText.search("อำเภอ") != -1) {
           addressText = addressText.replace(/อำเภอ/g, " อำเภอ/เขต ")
-        } else if(addressText.search("เขต") != -1) {
+        } else if (addressText.search("เขต") != -1) {
           addressText = addressText.replace(/เขต/g, " อำเภอ/เขต ")
         }
 
         var address = addressText
-        .split(" ");
+          .split(" ");
 
         console.log("address.after", addressText)
 
@@ -299,7 +305,7 @@
         //tableRender
 
         var rowText = "<tr>";
-        rowText += "<td>" + taxIds + "</td>";
+        rowText += "<td>" + taxIds.join("").replace(/-/g, "") + "</td>";
         rowText += "<td>" + cols[2] + "</td>";
 
         if (companyNames.substr(0, 6) == "บริษัท") {
